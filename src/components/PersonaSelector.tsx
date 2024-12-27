@@ -9,7 +9,7 @@ interface PersonaSelectorProps {
 
 export const PersonaSelector = ({ personas, selectedPersona, onSelect }: PersonaSelectorProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8">
       {personas.map((persona) => (
         <motion.div
           key={persona.id}
@@ -17,7 +17,7 @@ export const PersonaSelector = ({ personas, selectedPersona, onSelect }: Persona
           whileTap={{ scale: 0.98 }}
           onClick={() => onSelect(persona)}
           className={`
-            cursor-pointer rounded-xl p-6 
+            cursor-pointer rounded-xl p-4 
             ${selectedPersona.id === persona.id 
               ? 'bg-indigo-600 text-white' 
               : 'bg-white text-indigo-900 hover:bg-indigo-50'
@@ -25,14 +25,16 @@ export const PersonaSelector = ({ personas, selectedPersona, onSelect }: Persona
             transition-colors duration-200 shadow-lg
           `}
         >
-          <div className="flex items-center space-x-4">
-            <div className="text-2xl">{persona.icon}</div>
-            <div>
-              <h3 className="font-bold text-lg">{persona.name}</h3>
-              <p className={`text-sm ${selectedPersona.id === persona.id ? 'text-indigo-100' : 'text-indigo-600'}`}>
-                {persona.description}
-              </p>
-            </div>
+          <div className="flex flex-col items-center text-center space-y-2">
+            <div className="text-3xl mb-2">{persona.icon}</div>
+            <h3 className="font-bold text-lg leading-tight">{persona.name}</h3>
+            <p className={`text-sm ${
+              selectedPersona.id === persona.id 
+                ? 'text-indigo-100' 
+                : 'text-indigo-600'
+            }`}>
+              {persona.description}
+            </p>
           </div>
         </motion.div>
       ))}
