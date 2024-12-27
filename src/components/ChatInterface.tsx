@@ -34,7 +34,7 @@ export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
           model: "gpt-4",
@@ -46,7 +46,10 @@ export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
         }),
       });
 
-      if (!response.ok) throw new Error("Failed to get response");
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || 'Failed to get response');
+      }
 
       const data = await response.json();
       const assistantMessage = { 
@@ -56,7 +59,8 @@ export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
       
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
-      toast.error("Failed to get response. Please try again.");
+      console.error('API Error:', error);
+      toast.error(error instanceof Error ? error.message : "Failed to get response. Please try again.");
     } finally {
       setIsLoading(false);
     }
