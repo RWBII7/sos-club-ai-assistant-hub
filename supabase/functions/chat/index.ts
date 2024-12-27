@@ -8,6 +8,23 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Function to convert markdown-style lists to plain text
+const formatResponse = (text: string) => {
+  // Remove markdown headers
+  text = text.replace(/###\s/g, '');
+  
+  // Convert numbered lists to plain text
+  text = text.replace(/^\d+\.\s+/gm, '• ');
+  
+  // Convert bullet points to plain text
+  text = text.replace(/^\*\s/gm, '• ');
+  
+  // Add extra line breaks between sections
+  text = text.replace(/\n\n/g, '\n\n');
+  
+  return text;
+};
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -26,7 +43,10 @@ serve(async (req) => {
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages: [
-          { role: 'system', content: persona.prompt },
+          { 
+            role: 'system', 
+            content: persona.prompt + "\n\nProvide responses in plain text format. Use simple bullet points (•) for lists and add line breaks between sections for readability." 
+          },
           ...messages.map(({ role, content }) => ({
             role,
             content,
@@ -42,7 +62,19 @@ serve(async (req) => {
       throw new Error(data.error?.message || 'Failed to get response from OpenAI');
     }
 
-    return new Response(JSON.stringify(data), {
+    // Format the response before sending it back
+    const formattedResponse = {
+      ...data,
+      choices: [{
+        ...data.choices[0],
+        message: {
+          ...data.choices[0].message,
+          content: formatResponse(data.choices[0].message.content)
+        }
+      }]
+    };
+
+    return new Response(JSON.stringify(formattedResponse), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
