@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PersonaType } from "../lib/personas";
 import { toast } from "sonner";
 import { MessageList } from "./chat/MessageList";
@@ -21,7 +21,7 @@ export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   // Reset messages when persona changes
-  useState(() => {
+  useEffect(() => {
     setMessages([{ role: "assistant", content: persona.initialQuestion }]);
   }, [persona]);
 
