@@ -3,6 +3,7 @@ import { PersonaType } from "../lib/personas";
 import { toast } from "sonner";
 import { MessageList } from "./chat/MessageList";
 import { MessageInput } from "./chat/MessageInput";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Message {
   role: "user" | "assistant";
@@ -34,31 +35,15 @@ export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-        },
-        body: JSON.stringify({
-          model: "gpt-4",
-          messages: [
-            { 
-              role: "system", 
-              content: `You are ${persona.name}. ${persona.description}. Respond in a way that matches this persona.` 
-            },
-            ...messages,
-            userMessage
-          ],
-          temperature: 0.7,
-        })
+      const { data, error } = await supabase.functions.invoke('chat', {
+        body: {
+          messages: [...messages, userMessage],
+          persona: persona
+        }
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to get response from OpenAI');
-      }
+      if (error) throw error;
 
-      const data = await response.json();
       const assistantMessage = {
         role: "assistant" as const,
         content: data.choices[0].message.content
