@@ -15,37 +15,16 @@ interface ChatInterfaceProps {
   persona: PersonaType;
 }
 
-const COMMUNITY_API_KEY_NAME = "community_openai_api_key";
-
 export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: persona.initialQuestion }
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [apiKey, setApiKey] = useState("");
-  const [showApiKeyInput, setShowApiKeyInput] = useState(false);
-
-  // Check for community API key on mount
-  useState(() => {
-    const savedApiKey = localStorage.getItem(COMMUNITY_API_KEY_NAME);
-    if (savedApiKey) {
-      setApiKey(savedApiKey);
-      setShowApiKeyInput(false);
-    } else {
-      setShowApiKeyInput(true);
-    }
-  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
-
-    if (!apiKey) {
-      toast.error("Please enter the community API key first");
-      setShowApiKeyInput(true);
-      return;
-    }
 
     const userMessage = { role: "user" as const, content: input };
     setMessages(prev => [...prev, userMessage]);
@@ -53,75 +32,21 @@ export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4",
-          messages: [
-            { role: "system", content: persona.prompt },
-            ...messages,
-            userMessage,
-          ],
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error?.message || 'Failed to get response');
-      }
-
-      const data = await response.json();
-      const assistantMessage = { 
-        role: "assistant" as const, 
-        content: data.choices[0].message.content 
+      // Mock response for now - replace this with your actual backend call
+      const mockResponse = {
+        role: "assistant" as const,
+        content: "I'm sorry, but I'm currently in demo mode. Please contact the administrator to enable full functionality."
       };
       
-      setMessages(prev => [...prev, assistantMessage]);
+      setMessages(prev => [...prev, mockResponse]);
+      toast.info("This is a demo version. Please contact the administrator for full access.");
     } catch (error) {
-      console.error('API Error:', error);
-      toast.error(error instanceof Error ? error.message : "Failed to get response. Please try again.");
+      console.error('Error:', error);
+      toast.error("Failed to get response. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
-
-  const handleApiKeySubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (apiKey.trim()) {
-      localStorage.setItem(COMMUNITY_API_KEY_NAME, apiKey);
-      setShowApiKeyInput(false);
-      toast.success("Community API key saved! You won't need to enter it again.");
-    }
-  };
-
-  if (showApiKeyInput) {
-    return (
-      <div className="bg-white rounded-xl shadow-xl p-4 md:p-6">
-        <form onSubmit={handleApiKeySubmit} className="space-y-4">
-          <div>
-            <h2 className="text-lg font-semibold mb-2">Enter Community API Key</h2>
-            <p className="text-sm text-gray-600 mb-4">
-              Enter the community API key provided by your administrator. This only needs to be done once.
-            </p>
-            <input
-              type="password"
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              className="w-full p-2 border rounded-md"
-              placeholder="Enter community API key..."
-            />
-          </div>
-          <Button type="submit" disabled={!apiKey.trim()}>
-            Save Community Key
-          </Button>
-        </form>
-      </div>
-    );
-  }
 
   return (
     <div className="bg-white rounded-xl shadow-xl p-4 md:p-6">
