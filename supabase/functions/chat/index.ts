@@ -12,12 +12,21 @@ const corsHeaders = {
 const formatResponse = (text: string) => {
   // Remove markdown headers
   text = text.replace(/###\s/g, '');
+  text = text.replace(/##\s/g, '');
+  text = text.replace(/#\s/g, '');
   
   // Convert numbered lists to plain text
   text = text.replace(/^\d+\.\s+/gm, '• ');
   
-  // Convert bullet points to plain text
+  // Convert bullet points and asterisks to plain text
   text = text.replace(/^\*\s/gm, '• ');
+  text = text.replace(/^\-\s/gm, '• ');
+  
+  // Remove any remaining markdown symbols
+  text = text.replace(/\*\*/g, '');
+  text = text.replace(/\*/g, '');
+  text = text.replace(/`/g, '');
+  text = text.replace(/>/g, '');
   
   // Add extra line breaks between sections
   text = text.replace(/\n\n/g, '\n\n');
@@ -45,7 +54,7 @@ serve(async (req) => {
         messages: [
           { 
             role: 'system', 
-            content: persona.prompt + "\n\nProvide responses in plain text format. Use simple bullet points (•) for lists and add line breaks between sections for readability." 
+            content: persona.prompt + "\n\nIMPORTANT: You must provide responses in plain text only. DO NOT use any markdown formatting, symbols, or special characters. Format your responses like this:\n\nMain points should be on their own line.\n\nFor lists, use simple bullet points with a dot (•) at the start of the line:\n\n• Like this\n• And this\n\nAdd empty lines between different sections for readability.\n\nNever use markdown symbols like #, *, >, or `." 
           },
           ...messages.map(({ role, content }) => ({
             role,
