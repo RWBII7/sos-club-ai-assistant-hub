@@ -1,5 +1,4 @@
 import { hooksmith } from "./hooksmith";
-import { dreamClientWhisperer } from "./dream-client-whisperer";
 
 export type PersonaType = {
   id: string;
@@ -11,6 +10,5 @@ export type PersonaType = {
 };
 
 export const personas: PersonaType[] = [
-  hooksmith,
-  dreamClientWhisperer
+  hooksmith
 ];
