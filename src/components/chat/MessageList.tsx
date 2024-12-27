@@ -12,8 +12,18 @@ interface MessageListProps {
 }
 
 export const MessageList = ({ messages, isLoading }: MessageListProps) => {
+  // Function to format message content with proper line breaks
+  const formatMessage = (content: string) => {
+    return content.split('\n').map((line, i) => (
+      <span key={i}>
+        {line}
+        <br />
+      </span>
+    ));
+  };
+
   return (
-    <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+    <div className="flex-1 overflow-y-auto space-y-4 mb-4 px-2">
       <AnimatePresence>
         {messages.map((message, index) => (
           <motion.div
@@ -25,14 +35,14 @@ export const MessageList = ({ messages, isLoading }: MessageListProps) => {
           >
             <div
               className={`
-                max-w-[80%] rounded-lg p-4
+                max-w-[80%] rounded-lg p-4 whitespace-pre-wrap
                 ${message.role === "user" 
                   ? "bg-indigo-600 text-white" 
                   : "bg-gray-100 text-gray-900"
                 }
               `}
             >
-              {message.content}
+              {formatMessage(message.content)}
             </div>
           </motion.div>
         ))}
