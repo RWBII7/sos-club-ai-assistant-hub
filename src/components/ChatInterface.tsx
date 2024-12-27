@@ -20,6 +20,11 @@ export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  // Reset messages when persona changes
+  useState(() => {
+    setMessages([{ role: "assistant", content: persona.initialQuestion }]);
+  }, [persona]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
