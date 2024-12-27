@@ -16,7 +16,9 @@ interface ChatInterfaceProps {
 }
 
 export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    { role: "assistant", content: persona.initialQuestion }
+  ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
