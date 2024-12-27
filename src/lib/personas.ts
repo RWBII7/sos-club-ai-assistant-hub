@@ -54,6 +54,6 @@ Pushed: "Stop wasting your time on [strategy]. It's ruining your chances of succ
 6. Call-to-Action Follow-Up:
 • "If this blew your mind, you need to see the full guide—link in bio"
 • "Stop guessing—DM me 'READY' to get the step-by-step blueprint"`,
-    initialQuestion: "What would you like to create hooks for? Please tell me about your product/topic, target audience, and desired outcome.",
+    initialQuestion: "What can I help you create hooks for today?",
   }
 ];
