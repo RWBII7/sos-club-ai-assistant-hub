@@ -21,17 +21,10 @@ export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [apiKey, setApiKey] = useState("");
-  const [showApiKeyInput, setShowApiKeyInput] = useState(true);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
-
-    if (!apiKey) {
-      toast.error("Please enter your OpenAI API key first");
-      return;
-    }
 
     const userMessage = { role: "user" as const, content: input };
     setMessages(prev => [...prev, userMessage]);
@@ -39,11 +32,10 @@ export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      const response = await fetch("https://api.sosclub.pro/v1/chat/completions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
           model: "gpt-4",
@@ -74,48 +66,6 @@ export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
       setIsLoading(false);
     }
   };
-
-  const handleApiKeySubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (apiKey.trim()) {
-      setShowApiKeyInput(false);
-      toast.success("API key saved!");
-    }
-  };
-
-  if (showApiKeyInput) {
-    return (
-      <div className="bg-white rounded-xl shadow-xl p-4 md:p-6">
-        <form onSubmit={handleApiKeySubmit} className="space-y-4">
-          <div>
-            <h2 className="text-lg font-semibold mb-2">Enter your OpenAI API Key</h2>
-            <p className="text-sm text-gray-600 mb-4">
-              Your API key will be stored locally and used only for this session.
-              Get your API key from{" "}
-              <a
-                href="https://platform.openai.com/api-keys"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-indigo-600 hover:text-indigo-800"
-              >
-                OpenAI's dashboard
-              </a>
-            </p>
-            <input
-              type="password"
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              className="w-full p-2 border rounded-md"
-              placeholder="sk-..."
-            />
-          </div>
-          <Button type="submit" disabled={!apiKey.trim()}>
-            Save API Key
-          </Button>
-        </form>
-      </div>
-    );
-  }
 
   return (
     <div className="bg-white rounded-xl shadow-xl p-4 md:p-6">
