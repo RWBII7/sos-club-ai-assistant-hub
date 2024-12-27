@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { PersonaType } from "../lib/personas";
 import { toast } from "sonner";
 import { MessageList } from "./chat/MessageList";
@@ -20,10 +20,6 @@ export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    setMessages([{ role: "assistant", content: persona.initialQuestion }]);
-  }, [persona]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
