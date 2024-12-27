@@ -20,7 +20,6 @@ export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  // Reset messages when persona changes
   useEffect(() => {
     setMessages([{ role: "assistant", content: persona.initialQuestion }]);
   }, [persona]);
@@ -35,14 +34,37 @@ export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
     setIsLoading(true);
 
     try {
-      // Mock response for now - replace this with your actual backend call
-      const mockResponse = {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "gpt-4",
+          messages: [
+            { 
+              role: "system", 
+              content: `You are ${persona.name}. ${persona.description}. Respond in a way that matches this persona.` 
+            },
+            ...messages,
+            userMessage
+          ],
+          temperature: 0.7,
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response from OpenAI');
+      }
+
+      const data = await response.json();
+      const assistantMessage = {
         role: "assistant" as const,
-        content: "I'm sorry, but I'm currently in demo mode. Please contact the administrator to enable full functionality."
+        content: data.choices[0].message.content
       };
       
-      setMessages(prev => [...prev, mockResponse]);
-      toast.info("This is a demo version. Please contact the administrator for full access.");
+      setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
       console.error('Error:', error);
       toast.error("Failed to get response. Please try again.");
