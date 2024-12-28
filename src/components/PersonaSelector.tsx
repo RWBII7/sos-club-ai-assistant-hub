@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { PersonaType } from "../lib/personas";
 
 interface PersonaSelectorProps {
@@ -9,34 +8,34 @@ interface PersonaSelectorProps {
 
 export const PersonaSelector = ({ personas, selectedPersona, onSelect }: PersonaSelectorProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
       {personas.map((persona) => (
-        <motion.div
+        <button
           key={persona.id}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => onSelect(persona)}
+          onClick={() => !persona.disabled && onSelect(persona)}
           className={`
-            cursor-pointer rounded-xl p-4 
+            relative p-4 rounded-xl text-left transition-all duration-200
             ${selectedPersona.id === persona.id 
-              ? 'bg-indigo-600 text-white' 
-              : 'bg-white text-indigo-900 hover:bg-indigo-50'
+              ? 'bg-indigo-600 text-white shadow-lg scale-105' 
+              : 'bg-white text-gray-900 hover:bg-gray-50'
             }
-            transition-colors duration-200 shadow-lg
+            ${persona.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}
           `}
         >
-          <div className="flex flex-col items-center text-center space-y-2">
-            <div className="text-3xl mb-2">{persona.icon}</div>
-            <h3 className="font-bold text-lg leading-tight">{persona.name}</h3>
-            <p className={`text-sm ${
-              selectedPersona.id === persona.id 
-                ? 'text-indigo-100' 
-                : 'text-indigo-600'
-            }`}>
-              {persona.description}
-            </p>
-          </div>
-        </motion.div>
+          <div className="text-2xl mb-2">{persona.icon}</div>
+          <h3 className="font-semibold mb-1">{persona.name}</h3>
+          <p className="text-sm opacity-90">{persona.description}</p>
+          {persona.disabled && (
+            <div className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+              Coming Soon
+            </div>
+          )}
+          {persona.demoOnly && (
+            <div className="absolute bottom-2 right-2 bg-indigo-500 text-white text-xs px-2 py-1 rounded">
+              Demo
+            </div>
+          )}
+        </button>
       ))}
     </div>
   );
