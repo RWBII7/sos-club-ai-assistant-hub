@@ -9,7 +9,6 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
-  base: "/sos-club-ai-assistant-hub/",
   plugins: [
     react(),
     mode === 'development' &&
