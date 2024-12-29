@@ -15,9 +15,7 @@ interface ChatInterfaceProps {
 }
 
 export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
-  const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: persona.initialQuestion }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,7 +23,7 @@ export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
   useEffect(() => {
     setMessages([{ role: "assistant", content: persona.initialQuestion }]);
     setInput("");
-  }, [persona]);
+  }, [persona.id]); // Add persona.id as dependency to ensure it triggers on persona change
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
