@@ -25,6 +25,11 @@ export const ChatInterface = ({ persona }: ChatInterfaceProps) => {
     e.preventDefault();
     if (!input.trim()) return;
 
+    if (persona.disabled) {
+      window.location.href = "https://success-on-social.mn.co/sign_up?plan_id=1730041";
+      return;
+    }
+
     const userMessage = { role: "user" as const, content: input };
     setMessages(prev => [...prev, userMessage]);
     setInput("");

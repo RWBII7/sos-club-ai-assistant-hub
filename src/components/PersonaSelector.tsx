@@ -26,7 +26,7 @@ export const PersonaSelector = ({ personas, selectedPersona, onSelect }: Persona
           <h3 className="font-semibold mb-1">{persona.name}</h3>
           <p className="text-sm opacity-90">{persona.description}</p>
           {persona.disabled && (
-            <div className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+            <div className="absolute top-2 right-2 bg-[#8B5CF6] text-white text-xs px-2 py-1 rounded">
               Premium
             </div>
           )}
