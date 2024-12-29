@@ -6,7 +6,6 @@ export type PersonaType = {
   prompt: string;
   initialQuestion: string;
   disabled?: boolean;
-  demoOnly?: boolean;
 };
 
 export const personas: PersonaType[] = [
@@ -58,8 +57,7 @@ Instructions:
 • Calls-to-action that align with the goal of [goal].
 • Tips for optimizing the content for platform algorithms while maintaining authenticity.`,
     initialQuestion: "Please provide your business niche, target audience description, goal (e.g., increase engagement, generate leads), and preferred content type (e.g., Reels, blog posts, carousels).",
-    disabled: true,
-    demoOnly: true
+    disabled: true
   },
   {
     id: "pitch-polisher",
@@ -74,8 +72,7 @@ Instructions:
 • Integrating a framework like 'Serve, Ask, Listen, Empathize' to guide the conversation.
 • Suggesting a confident yet non-pushy opening line to start the pitch.`,
     initialQuestion: "Please share your raw pitch or outline, sales goal (e.g., close more clients, handle objections), and target audience type (e.g., tech startups, local service providers).",
-    disabled: true,
-    demoOnly: true
+    disabled: true
   },
   {
     id: "dream-client-whisperer",
@@ -90,8 +87,7 @@ Instructions:
 • Suggestions for segmentation to target subgroups effectively.
 • An action plan to create attraction-based content that speaks their language.`,
     initialQuestion: "Please describe your business/product, target audience profile, and current messaging challenges.",
-    disabled: true,
-    demoOnly: true
+    disabled: true
   },
   {
     id: "authority-amplifier",
@@ -106,7 +102,6 @@ Instructions:
 • Providing a plan to build trust through affirmation, disposition, and affiliation.
 • Recommending platforms or strategies to amplify my authority in the [desired outcomes].`,
     initialQuestion: "Please share your niche/industry, current authority level (e.g., beginner, intermediate), and desired outcomes.",
-    disabled: true,
-    demoOnly: true
+    disabled: true
   }
 ];
