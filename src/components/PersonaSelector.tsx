@@ -12,14 +12,14 @@ export const PersonaSelector = ({ personas, selectedPersona, onSelect }: Persona
       {personas.map((persona) => (
         <button
           key={persona.id}
-          onClick={() => !persona.disabled && onSelect(persona)}
+          onClick={() => onSelect(persona)}
           className={`
             relative p-4 rounded-xl text-left transition-all duration-200
             ${selectedPersona.id === persona.id 
               ? 'bg-indigo-600 text-white shadow-lg scale-105' 
               : 'bg-white text-gray-900 hover:bg-gray-50'
             }
-            ${persona.disabled ? 'cursor-not-allowed' : 'hover:scale-105'}
+            hover:scale-105
           `}
         >
           <div className="text-2xl mb-2">{persona.icon}</div>
