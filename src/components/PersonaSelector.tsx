@@ -19,7 +19,7 @@ export const PersonaSelector = ({ personas, selectedPersona, onSelect }: Persona
               ? 'bg-indigo-600 text-white shadow-lg scale-105' 
               : 'bg-white text-gray-900 hover:bg-gray-50'
             }
-            ${persona.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}
+            ${persona.disabled ? 'cursor-not-allowed' : 'hover:scale-105'}
           `}
         >
           <div className="text-2xl mb-2">{persona.icon}</div>
@@ -28,11 +28,6 @@ export const PersonaSelector = ({ personas, selectedPersona, onSelect }: Persona
           {persona.disabled && (
             <div className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 rounded">
               Premium
-            </div>
-          )}
-          {persona.demoOnly && (
-            <div className="absolute bottom-2 right-2 bg-indigo-500 text-white text-xs px-2 py-1 rounded">
-              Demo
             </div>
           )}
         </button>
