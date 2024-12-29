@@ -27,7 +27,7 @@ export const PersonaSelector = ({ personas, selectedPersona, onSelect }: Persona
           <p className="text-sm opacity-90">{persona.description}</p>
           {persona.disabled && (
             <div className="absolute top-2 right-2 bg-gray-800 text-white text-xs px-2 py-1 rounded">
-              Coming Soon
+              Premium
             </div>
           )}
           {persona.demoOnly && (
