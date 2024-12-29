@@ -5,6 +5,7 @@ import { useState } from "react";
 import { PersonaType } from "../lib/personas";
 
 const Index = () => {
+  console.log("Index component rendering"); // Adding a console log to help debug
   const [selectedPersona, setSelectedPersona] = useState<PersonaType>(personas[0]);
 
   return (
